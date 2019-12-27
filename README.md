@@ -1,9 +1,7 @@
 # Abstract  
   
 This page is created to facilicate the code sharing for the final year project of team 33.  
-Our final year project is to create a home security system with Raspberry Pi 4.  
-'original py' contains raw file.  
-'modified py' contains changed file.      
+Our final year project is to create a home security system with Raspberry Pi 4.     
 
 # Object Detection on Raspberry Pi 4 Demo
 https://www.youtube.com/watch?v=JbwCFq9HifU&feature=youtu.be
