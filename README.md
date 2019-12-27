@@ -1,6 +1,6 @@
-# team33  
+# Abstract  
   
-This page is created to save the code for the final year project of team 33.  
+This page is created to facilicate the code sharing for the final year project of team 33.  
 Our final year project is to create a home security system with Raspberry Pi 4.  
 'original py' contains raw file.  
 'modified py' contains changed file.      
