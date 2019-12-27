@@ -1,14 +1,14 @@
-######## Raspberry Pi Pet Detector Camera using TensorFlow Object Detection API #########
+######## Raspberry Pi Person Detector Camera using TensorFlow Object Detection API #########
 #
 # Author: Evan Juras
 # Date: 10/15/18
 # Description:
 #
-# This script implements a "pet detector" that alerts the user if a pet is
+# This script implements a "person detector" that alerts the user if a person is
 # waiting to be let inside or outside. It takes video frames from a Picamera
 # or USB webcam, passes them through a TensorFlow object detection model,
-# determines if a cat or dog has been detected in the image, checks the location
-# of the cat or dog in the frame, and texts the user's phone if a cat or dog is
+# determines if a person has been detected in the image, checks the location
+# of the person in the frame, and texts the user's phone if a person is
 # detected in the appropriate location.
 #
 # The framework is based off the Object_detection_picamera.py script located here:
@@ -38,6 +38,8 @@ account_sid = 'AC7c6afda537283490a6b85d071c4f985d'
 auth_token = '3150f5d70f7f8f9ce6d927ae17276c16'
 my_number = 'whatsapp:+85269917180'
 twilio_number = 'whatsapp:+14155238886'
+note_1 = 'Someone wants to go outside!'
+note_2 = 'Someone wants to go inside!'
 
 client = Client(account_sid,auth_token)
 
@@ -133,7 +135,7 @@ BR_inside = (int(IM_WIDTH*0.45),int(IM_HEIGHT-5))
 TL_outside = (int(IM_WIDTH*0.46),int(IM_HEIGHT*0.25))
 BR_outside = (int(IM_WIDTH*0.8),int(IM_HEIGHT*.85))
 
-# Initialize control variables used for pet detector
+# Initialize control variables used for person detector
 detected_inside = False
 detected_outside = False
 
@@ -143,11 +145,11 @@ outside_counter = 0
 pause = 0
 pause_counter = 0
 
-#### Pet detection function ####
+#### person detection function ####
 
-# This function contains the code to detect a pet, determine if it's
+# This function contains the code to detect a person, determine if it's
 # inside or outside, and send a text to the user's phone.
-def pet_detector(frame):
+def person_detector(frame):
 
     # Use globals for the control variables so they retain their value after function exits
     global detected_inside, detected_outside
@@ -179,10 +181,10 @@ def pet_detector(frame):
     cv2.putText(frame,"Inside box",(TL_inside[0]+10,TL_inside[1]-10),font,1,(20,255,255),3,cv2.LINE_AA)
     
     # Check the class of the top detected object by looking at classes[0][0].
-    # If the top detected object is a cat (17) or a dog (18) (or a teddy bear (88) for test purposes),
+    # If the top detected object is a person (1) for test purposes),
     # find its center coordinates by looking at the boxes[0][0] variable.
     # boxes[0][0] variable holds coordinates of detected objects as (ymin, xmin, ymax, xmax)
-    if (((int(classes[0][0]) == 17) or (int(classes[0][0] == 18) or (int(classes[0][0]) == 88))) and (pause == 0)):
+    if ((int(classes[0][0]) == 1)  and (pause == 0)):
         x = int(((boxes[0][0][1]+boxes[0][0][3])/2)*IM_WIDTH)
         y = int(((boxes[0][0][0]+boxes[0][0][2])/2)*IM_HEIGHT)
 
@@ -197,43 +199,43 @@ def pet_detector(frame):
         if ((x > TL_outside[0]) and (x < BR_outside[0]) and (y > TL_outside[1]) and (y < BR_outside[1])):
             outside_counter = outside_counter + 1
 
-    # If pet has been detected inside for more than 10 frames, set detected_inside flag
+    # If person has been detected inside for more than 10 frames, set detected_inside flag
     # and send a text to the phone.
     if inside_counter > 10:
         detected_inside = True
         message = client.messages.create(
-            body = 'Your pet wants outside!',
+            body = note_1,
             from_=twilio_number,
             to=my_number
             )
         inside_counter = 0
         outside_counter = 0
-        # Pause pet detection by setting "pause" flag
+        # Pause person detection by setting "pause" flag
         pause = 1
 
-    # If pet has been detected outside for more than 10 frames, set detected_outside flag
+    # If person has been detected outside for more than 10 frames, set detected_outside flag
     # and send a text to the phone.
     if outside_counter > 10:
         detected_outside = True
         message = client.messages.create(
-            body = 'Your pet wants inside!',
+            body = note_2,
             from_=twilio_number,
             to=my_number
             )
         inside_counter = 0
         outside_counter = 0
-        # Pause pet detection by setting "pause" flag
+        # Pause person detection by setting "pause" flag
         pause = 1
 
     # If pause flag is set, draw message on screen.
     if pause == 1:
         if detected_inside == True:
-            cv2.putText(frame,'Pet wants outside!',(int(IM_WIDTH*.1),int(IM_HEIGHT*.5)),font,3,(0,0,0),7,cv2.LINE_AA)
-            cv2.putText(frame,'Pet wants outside!',(int(IM_WIDTH*.1),int(IM_HEIGHT*.5)),font,3,(95,176,23),5,cv2.LINE_AA)
+            cv2.putText(frame,str(note_1),(int(IM_WIDTH*.1),int(IM_HEIGHT*.5)),font,3,(0,0,0),7,cv2.LINE_AA)
+            cv2.putText(frame,str(note_1),(int(IM_WIDTH*.1),int(IM_HEIGHT*.5)),font,3,(95,176,23),5,cv2.LINE_AA)
 
         if detected_outside == True:
-            cv2.putText(frame,'Pet wants inside!',(int(IM_WIDTH*.1),int(IM_HEIGHT*.5)),font,3,(0,0,0),7,cv2.LINE_AA)
-            cv2.putText(frame,'Pet wants inside!',(int(IM_WIDTH*.1),int(IM_HEIGHT*.5)),font,3,(95,176,23),5,cv2.LINE_AA)
+            cv2.putText(frame,str(note_2),(int(IM_WIDTH*.1),int(IM_HEIGHT*.5)),font,3,(0,0,0),7,cv2.LINE_AA)
+            cv2.putText(frame,str(note_2),(int(IM_WIDTH*.1),int(IM_HEIGHT*.5)),font,3,(95,176,23),5,cv2.LINE_AA)
 
         # Increment pause counter until it reaches 30 (for a framerate of 1.5 FPS, this is about 20 seconds),
         # then unpause the application (set pause flag to 0).
@@ -271,11 +273,11 @@ if camera_type == 'picamera':
         
         # Acquire frame and expand frame dimensions to have shape: [1, None, None, 3]
         # i.e. a single-column array, where each item in the column has the pixel RGB value
-        frame = frame1.array
+        frame = np.copy(frame1.array)
         frame.setflags(write=1)
 
-        # Pass frame into pet detection function
-        frame = pet_detector(frame)
+        # Pass frame into person detection function
+        frame = person_detector(frame)
 
         # Draw FPS
         cv2.putText(frame,"FPS: {0:.2f}".format(frame_rate_calc),(30,50),font,1,(255,255,0),2,cv2.LINE_AA)
@@ -313,8 +315,8 @@ elif camera_type == 'usb':
         # i.e. a single-column array, where each item in the column has the pixel RGB value
         ret, frame = camera.read()
 
-        # Pass frame into pet detection function
-        frame = pet_detector(frame)
+        # Pass frame into person detection function
+        frame = person_detector(frame)
 
         # Draw FPS
         cv2.putText(frame,"FPS: {0:.2f}".format(frame_rate_calc),(30,50),font,1,(255,255,0),2,cv2.LINE_AA)
@@ -334,3 +336,6 @@ elif camera_type == 'usb':
     camera.release()
         
 cv2.destroyAllWindows()
+
+
+
