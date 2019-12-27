@@ -35,7 +35,7 @@ from twilio.rest import Client
 # Twilio SID, authentication token, my phone number, and the Twilio phone number
 # are stored as environment variables on my Pi so people can't see them
 account_sid = 'AC7c6afda537283490a6b85d071c4f985d'
-auth_token = '3150f5d70f7f8f9ce6d927ae17276c16'
+auth_token = '35df4feed2ec6a4d99760529d84a3ac4'
 my_number = 'whatsapp:+85269917180'
 twilio_number = 'whatsapp:+14155238886'
 note_1 = 'Someone wants to go outside!'
