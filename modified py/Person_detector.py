@@ -230,12 +230,12 @@ def person_detector(frame):
     # If pause flag is set, draw message on screen.
     if pause == 1:
         if detected_inside == True:
-            cv2.putText(frame,str(note_1),(int(IM_WIDTH*.1),int(IM_HEIGHT*.5)),font,3,(0,0,0),7,cv2.LINE_AA)
-            cv2.putText(frame,str(note_1),(int(IM_WIDTH*.1),int(IM_HEIGHT*.5)),font,3,(95,176,23),5,cv2.LINE_AA)
+            cv2.putText(frame,str(note_1),(int(IM_WIDTH*.1),int(IM_HEIGHT*.5)),font,2,(0,0,0),7,cv2.LINE_AA)
+            cv2.putText(frame,str(note_1),(int(IM_WIDTH*.1),int(IM_HEIGHT*.5)),font,2,(95,176,23),5,cv2.LINE_AA)
 
         if detected_outside == True:
-            cv2.putText(frame,str(note_2),(int(IM_WIDTH*.1),int(IM_HEIGHT*.5)),font,3,(0,0,0),7,cv2.LINE_AA)
-            cv2.putText(frame,str(note_2),(int(IM_WIDTH*.1),int(IM_HEIGHT*.5)),font,3,(95,176,23),5,cv2.LINE_AA)
+            cv2.putText(frame,str(note_2),(int(IM_WIDTH*.1),int(IM_HEIGHT*.5)),font,2,(0,0,0),7,cv2.LINE_AA)
+            cv2.putText(frame,str(note_2),(int(IM_WIDTH*.1),int(IM_HEIGHT*.5)),font,2,(95,176,23),5,cv2.LINE_AA)
 
         # Increment pause counter until it reaches 30 (for a framerate of 1.5 FPS, this is about 20 seconds),
         # then unpause the application (set pause flag to 0).
