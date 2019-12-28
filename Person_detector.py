@@ -291,7 +291,7 @@ if camera_type == 'picamera':
         cv2.putText(frame, "FPS: {0:.2f}".format(frame_rate_calc), (30, 50), font, 1, (255, 255, 0), 2, cv2.LINE_AA)
 
         # All the results have been drawn on the frame, so it's time to display it.
-        cv2.imshow('Object detector', frame)
+        cv2.imshow('Person detector', frame)
 
         # FPS calculation
         t2 = cv2.getTickCount()
@@ -330,7 +330,7 @@ elif camera_type == 'usb':
         cv2.putText(frame, "FPS: {0:.2f}".format(frame_rate_calc), (30, 50), font, 1, (255, 255, 0), 2, cv2.LINE_AA)
 
         # All the results have been drawn on the frame, so it's time to display it.
-        cv2.imshow('Object detector', frame)
+        cv2.imshow('Person detector', frame)
 
         # FPS calculation
         t2 = cv2.getTickCount()
