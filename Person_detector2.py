@@ -178,9 +178,9 @@ def person_detector(frame):
 
     # Draw boxes defining "outside" and "inside" locations.
     cv2.rectangle(frame, TL_outside, BR_outside, (255, 20, 20), 3)
-    cv2.putText(frame, "Outside box", (TL_outside[0] + 10, TL_outside[1] - 10), font, 1, (255, 20, 255), 3, cv2.LINE_AA)
+    cv2.putText(frame, "Room_2", (TL_outside[0] + 10, TL_outside[1] - 10), font, 1, (255, 20, 255), 3, cv2.LINE_AA)
     cv2.rectangle(frame, TL_inside, BR_inside, (20, 20, 255), 3)
-    cv2.putText(frame, "Inside box", (TL_inside[0] + 10, TL_inside[1] - 10), font, 1, (20, 255, 255), 3, cv2.LINE_AA)
+    cv2.putText(frame, "Room_1", (TL_inside[0] + 10, TL_inside[1] - 10), font, 1, (20, 255, 255), 3, cv2.LINE_AA)
 
     # Check the class of the top detected object by looking at classes[0][0].
     # If the top detected object is a person (1) for test purposes),
