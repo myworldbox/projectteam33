@@ -1,13 +1,25 @@
-account_sid = 'AC7c6afda537283490a6b85d071c4f985d'
-auth_token = '35df4feed2ec6a4d99760529d84a3ac4'
-my_number = 'whatsapp:+85269917180'
-twilio_number = 'whatsapp:+14155238886'
-note_1 = 'Someone wants to go to room1!!!'
-note_2 = 'Someone wants to go to room2!!!'
-IM_WIDTH = 600
-IM_HEIGHT = 600
+######## Raspberry Pi Person Detector Camera using TensorFlow Object Detection API #########
+#
+# Author: Evan Juras
+# Date: 10/15/18
+# Description:
+#
+# This script implements a "person detector" that alerts the user if a person is
+# waiting to be let inside or outside. It takes video frames from a Picamera
+# or USB webcam, passes them through a TensorFlow object detection model,
+# determines if a person has been detected in the image, checks the location
+# of the person in the frame, and texts the user's phone if a person is
+# detected in the appropriate location.
+#
+# The framework is based off the Object_detection_picamera.py script located here:
+# https://github.com/EdjeElectronics/TensorFlow-Object-Detection-on-the-Raspberry-Pi/blob/master/Object_detection_picamera.py
+#
+# Sending a text requires setting up a Twilio account (free trials are available).
+# Here is a good tutorial for using Twilio:
+# https://www.twilio.com/docs/sms/quickstart/python
 
 
+# Import packages
 import os
 import cv2
 import numpy as np
@@ -16,12 +28,26 @@ from picamera import PiCamera
 import tensorflow.compat.v1 as tf
 import argparse
 import sys
+
+# Set up Twilio
 from twilio.rest import Client
 
+# Twilio SID, authentication token, my phone number, and the Twilio phone number
+# are stored as environment variables on my Pi so people can't see them
+account_sid = 'AC7c6afda537283490a6b85d071c4f985d'
+auth_token = '35df4feed2ec6a4d99760529d84a3ac4'
+my_number = 'whatsapp:+85269917180'
+twilio_number = 'whatsapp:+14155238886'
+note_1 = 'Someone wants to go to room1!!!'
+note_2 = 'Someone wants to go to room2!!!'
 
 client = Client(account_sid, auth_token)
 
-
+# Set up camera constants
+# IM_WIDTH = 1280
+# IM_HEIGHT = 720
+IM_WIDTH = 600
+IM_HEIGHT = 600
 
 # Select camera type (if user enters --usbcam when calling this script,
 # a USB webcam will be used)
@@ -104,16 +130,19 @@ freq = cv2.getTickFrequency()
 font = cv2.FONT_HERSHEY_SIMPLEX
 
 # Define inside box coordinates (top left and bottom right)
-TL_inside = (200, 200)
-BR_inside = (400, 400)
+TL_inside = (int(IM_WIDTH/6), int(IM_HEIGHT/6))
+BR_inside = (int(IM_WIDTH/3), int(IM_HEIGHT/3))
 
-
+# Define outside box coordinates (top left and bottom right)
+TL_outside = (int(IM_WIDTH * 2/3), int(IM_HEIGHT/6)
+BR_outside = (int(IM_WIDTH * 5/6), int(IM_HEIGHT/3)
 
 # Initialize control variables used for person detector
 detected_inside = False
+detected_outside = False
 
 inside_counter = 0
-
+outside_counter = 0
 
 pause = 0
 pause_counter = 0
@@ -125,8 +154,8 @@ pause_counter = 0
 # inside or outside, and send a text to the user's phone.
 def person_detector(frame):
     # Use globals for the control variables so they retain their value after function exits
-    global detected_inside
-    global inside_counter
+    global detected_inside, detected_outside
+    global inside_counter, outside_counter
     global pause, pause_counter
 
     frame_expanded = np.expand_dims(frame, axis=0)
@@ -147,7 +176,9 @@ def person_detector(frame):
         line_thickness=8,
         min_score_thresh=0.40)
 
-
+    # Draw boxes defining "outside" and "inside" locations.
+    cv2.rectangle(frame, TL_outside, BR_outside, (255, 20, 20), 3)
+    cv2.putText(frame, "Outside box", (TL_outside[0] + 10, TL_outside[1] - 10), font, 1, (255, 20, 255), 3, cv2.LINE_AA)
     cv2.rectangle(frame, TL_inside, BR_inside, (20, 20, 255), 3)
     cv2.putText(frame, "Inside box", (TL_inside[0] + 10, TL_inside[1] - 10), font, 1, (20, 255, 255), 3, cv2.LINE_AA)
 
@@ -166,6 +197,10 @@ def person_detector(frame):
         if ((x > TL_inside[0]) and (x < BR_inside[0]) and (y > TL_inside[1]) and (y < BR_inside[1])):
             inside_counter = inside_counter + 1
 
+        # If object is in outside box, increment outside counter variable
+        if ((x > TL_outside[0]) and (x < BR_outside[0]) and (y > TL_outside[1]) and (y < BR_outside[1])):
+            outside_counter = outside_counter + 1
+
     # If person has been detected inside for more than 10 frames, set detected_inside flag
     # and send a text to the phone.
     if inside_counter > 10:
@@ -176,11 +211,23 @@ def person_detector(frame):
             to=my_number
         )
         inside_counter = 0
-
+        outside_counter = 0
         # Pause person detection by setting "pause" flag
         pause = 1
 
- 
+    # If person has been detected outside for more than 10 frames, set detected_outside flag
+    # and send a text to the phone.
+    if outside_counter > 10:
+        detected_outside = True
+        message = client.messages.create(
+            body=note_2,
+            from_=twilio_number,
+            to=my_number
+        )
+        inside_counter = 0
+        outside_counter = 0
+        # Pause person detection by setting "pause" flag
+        pause = 1
 
     # If pause flag is set, draw message on screen.
     if pause == 1:
@@ -190,6 +237,12 @@ def person_detector(frame):
             cv2.putText(frame, str(note_1), (int(IM_WIDTH * .1), int(IM_HEIGHT * .5)), font, 2, (95, 176, 23), 5,
                         cv2.LINE_AA)
 
+        if detected_outside == True:
+            cv2.putText(frame, str(note_2), (int(IM_WIDTH * .1), int(IM_HEIGHT * .5)), font, 2, (0, 0, 0), 7,
+                        cv2.LINE_AA)
+            cv2.putText(frame, str(note_2), (int(IM_WIDTH * .1), int(IM_HEIGHT * .5)), font, 2, (95, 176, 23), 5,
+                        cv2.LINE_AA)
+
         # Increment pause counter until it reaches 30 (for a framerate of 1.5 FPS, this is about 20 seconds),
         # then unpause the application (set pause flag to 0).
         pause_counter = pause_counter + 1
@@ -197,6 +250,7 @@ def person_detector(frame):
             pause = 0
             pause_counter = 0
             detected_inside = False
+            detected_outside = False
 
     # Draw counter info
     cv2.putText(frame, 'Detection counter: ' + str(max(inside_counter, outside_counter)), (10, 100), font, 0.5,
