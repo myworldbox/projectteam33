@@ -44,10 +44,8 @@ note_2 = 'Someone went to Room 2!!!'
 client = Client(account_sid, auth_token)
 
 # Set up camera constants
-# IM_WIDTH = 1280
-# IM_HEIGHT = 720
-IM_WIDTH = 600
-IM_HEIGHT = 480
+IM_WIDTH = 1024
+IM_HEIGHT = 768
 
 # Select camera type (if user enters --usbcam when calling this script,
 # a USB webcam will be used)
@@ -232,12 +230,12 @@ def person_detector(frame):
     # If pause flag is set, draw message on screen.
     if pause == 1:
         if detected_inside == True:
-            cv2.putText(frame, str(note_1), (int(IM_WIDTH /2), int(IM_HEIGHT /2)), font, 1, (0, 0, 0), 1,
+            cv2.putText(frame, str(note_1), (int(IM_WIDTH), int(IM_HEIGHT /2)), font, 1, (0, 0, 0), 1,
                         cv2.LINE_AA)
             
 
         if detected_outside == True:
-            cv2.putText(frame, str(note_2), (int(IM_WIDTH /2), int(IM_HEIGHT /2)), font, 1, (0, 0, 0), 1,
+            cv2.putText(frame, str(note_2), (int(IM_WIDTH), int(IM_HEIGHT /2)), font, 1, (0, 0, 0), 1,
                         cv2.LINE_AA)
             
 
