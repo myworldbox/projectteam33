@@ -130,12 +130,12 @@ freq = cv2.getTickFrequency()
 font = cv2.FONT_HERSHEY_SIMPLEX
 
 # Define inside box coordinates (top left and bottom right)
-TL_inside = (int(IM_WIDTH/6), int(IM_HEIGHT/6))
-BR_inside = (int(IM_WIDTH/3), int(IM_HEIGHT/2))
+TL_inside = (int(IM_WIDTH/6), int(IM_HEIGHT/8))
+BR_inside = (int(IM_WIDTH/3), int(IM_HEIGHT * 7/8))
 
 # Define outside box coordinates (top left and bottom right)
-TL_outside = (int(IM_WIDTH * 2/3), int(IM_HEIGHT/6))
-BR_outside = (int(IM_WIDTH * 5/6), int(IM_HEIGHT/2))
+TL_outside = (int(IM_WIDTH * 2/3), int(IM_HEIGHT/8))
+BR_outside = (int(IM_WIDTH * 5/6), int(IM_HEIGHT* 7/8))
 
 # Initialize control variables used for person detector
 detected_inside = False
