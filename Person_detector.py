@@ -38,8 +38,8 @@ account_sid = 'AC7c6afda537283490a6b85d071c4f985d'
 auth_token = '35df4feed2ec6a4d99760529d84a3ac4'
 my_number = 'whatsapp:+85269917180'
 twilio_number = 'whatsapp:+14155238886'
-note_1 = 'Someone wants to go to Room 1!!!'
-note_2 = 'Someone wants to go to Room 2!!!'
+note_1 = 'Someone went to Room 1!!!'
+note_2 = 'Someone went to Room 2!!!'
 
 client = Client(account_sid, auth_token)
 
@@ -127,7 +127,7 @@ num_detections = detection_graph.get_tensor_by_name('num_detections:0')
 # Initialize frame rate calculation
 frame_rate_calc = 1
 freq = cv2.getTickFrequency()
-font = cv2.FONT_HERSHEY_SIMPLEX
+font = cv2.FONT_HERSHEY_COMPLEX
 
 # Define inside box coordinates (top left and bottom right)
 TL_inside = (int(IM_WIDTH/6), int(IM_HEIGHT/8))
@@ -232,15 +232,15 @@ def person_detector(frame):
     # If pause flag is set, draw message on screen.
     if pause == 1:
         if detected_inside == True:
-            cv2.putText(frame, str(note_1), (int(IM_WIDTH /2), int(IM_HEIGHT /2)), font, 1, (0, 0, 0), 2,
+            cv2.putText(frame, str(note_1), (int(IM_WIDTH /2), int(IM_HEIGHT /2)), font, 0.5, (0, 0, 0), 1,
                         cv2.LINE_AA)
-            cv2.putText(frame, str(note_1), (int(IM_WIDTH /2), int(IM_HEIGHT /2)), font, 1, (95, 176, 23), 3,
+            cv2.putText(frame, str(note_1), (int(IM_WIDTH /2), int(IM_HEIGHT /2)), font, 1, (0, 0, 0), 1,
                         cv2.LINE_AA)
 
         if detected_outside == True:
-            cv2.putText(frame, str(note_2), (int(IM_WIDTH /2), int(IM_HEIGHT /2)), font, 1, (0, 0, 0), 2,
+            cv2.putText(frame, str(note_2), (int(IM_WIDTH /2), int(IM_HEIGHT /2)), font, 0.5, (0, 0, 0), 1,
                         cv2.LINE_AA)
-            cv2.putText(frame, str(note_2), (int(IM_WIDTH /2), int(IM_HEIGHT /2)), font, 1, (95, 176, 23), 3,
+            cv2.putText(frame, str(note_2), (int(IM_WIDTH /2), int(IM_HEIGHT /2)), font, 1, (0, 0, 0), 1,
                         cv2.LINE_AA)
 
         # Increment pause counter until it reaches 30 (for a framerate of 1.5 FPS, this is about 20 seconds),
