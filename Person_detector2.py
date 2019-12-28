@@ -44,10 +44,10 @@ note_2 = 'Someone wants to go to room2!!!'
 client = Client(account_sid, auth_token)
 
 # Set up camera constants
-IM_WIDTH = 1280
-IM_HEIGHT = 720
-# IM_WIDTH = 600
-# IM_HEIGHT = 480
+# IM_WIDTH = 1280
+# IM_HEIGHT = 720
+IM_WIDTH = 600
+IM_HEIGHT = 480
 
 # Select camera type (if user enters --usbcam when calling this script,
 # a USB webcam will be used)
@@ -131,11 +131,11 @@ font = cv2.FONT_HERSHEY_SIMPLEX
 
 # Define inside box coordinates (top left and bottom right)
 TL_inside = (int(IM_WIDTH/6), int(IM_HEIGHT/6))
-BR_inside = (int(IM_WIDTH/3), int(IM_HEIGHT/3))
+BR_inside = (int(IM_WIDTH/3), int(IM_HEIGHT/2))
 
 # Define outside box coordinates (top left and bottom right)
 TL_outside = (int(IM_WIDTH * 2/3), int(IM_HEIGHT/6))
-BR_outside = (int(IM_WIDTH * 5/6), int(IM_HEIGHT/3))
+BR_outside = (int(IM_WIDTH * 5/6), int(IM_HEIGHT/2))
 
 # Initialize control variables used for person detector
 detected_inside = False
