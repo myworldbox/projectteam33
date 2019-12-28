@@ -44,10 +44,10 @@ note_2 = 'Someone wants to go to room2!!!'
 client = Client(account_sid, auth_token)
 
 # Set up camera constants
-# IM_WIDTH = 1280
-# IM_HEIGHT = 720
-IM_WIDTH = 600
-IM_HEIGHT = 600
+IM_WIDTH = 1280
+IM_HEIGHT = 720
+# IM_WIDTH = 600
+# IM_HEIGHT = 480
 
 # Select camera type (if user enters --usbcam when calling this script,
 # a USB webcam will be used)
