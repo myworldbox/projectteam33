@@ -38,14 +38,16 @@ account_sid = 'AC7c6afda537283490a6b85d071c4f985d'
 auth_token = '35df4feed2ec6a4d99760529d84a3ac4'
 my_number = 'whatsapp:+85269917180'
 twilio_number = 'whatsapp:+14155238886'
-note_1 = 'Someone wants to go outside!'
-note_2 = 'Someone wants to go inside!'
+note_1 = 'Someone wants to go to room1!!!'
+note_2 = 'Someone wants to go to room2!!!'
 
 client = Client(account_sid,auth_token)
 
 # Set up camera constants
-IM_WIDTH = 1280
-IM_HEIGHT = 720
+#IM_WIDTH = 1280
+#IM_HEIGHT = 720
+IM_WIDTH = 640  
+IM_HEIGHT = 480
 
 # Select camera type (if user enters --usbcam when calling this script,
 # a USB webcam will be used)
@@ -80,7 +82,7 @@ PATH_TO_CKPT = os.path.join(CWD_PATH,MODEL_NAME,'frozen_inference_graph.pb')
 PATH_TO_LABELS = os.path.join(CWD_PATH,'data','mscoco_label_map.pbtxt')
 
 # Number of classes the object detector can identify
-NUM_CLASSES = 90
+NUM_CLASSES = 10
 
 ## Load the label map.
 # Label maps map indices to category names, so that when the convolution
