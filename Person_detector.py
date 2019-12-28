@@ -38,8 +38,8 @@ account_sid = 'AC7c6afda537283490a6b85d071c4f985d'
 auth_token = '35df4feed2ec6a4d99760529d84a3ac4'
 my_number = 'whatsapp:+85269917180'
 twilio_number = 'whatsapp:+14155238886'
-note_1 = 'Someone wants to go to room1!!!'
-note_2 = 'Someone wants to go to room2!!!'
+note_1 = 'Someone wants to go to Room 1!!!'
+note_2 = 'Someone wants to go to Room 2!!!'
 
 client = Client(account_sid, auth_token)
 
@@ -178,9 +178,9 @@ def person_detector(frame):
 
     # Draw boxes defining "outside" and "inside" locations.
     cv2.rectangle(frame, TL_outside, BR_outside, (255, 20, 20), 3)
-    cv2.putText(frame, "Room_2", (TL_outside[0] + 10, TL_outside[1] - 10), font, 1, (255, 20, 255), 3, cv2.LINE_AA)
+    cv2.putText(frame, "Room 2", (TL_outside[0] + 10, TL_outside[1] - 10), font, 1, (255, 20, 255), 3, cv2.LINE_AA)
     cv2.rectangle(frame, TL_inside, BR_inside, (20, 20, 255), 3)
-    cv2.putText(frame, "Room_1", (TL_inside[0] + 10, TL_inside[1] - 10), font, 1, (20, 255, 255), 3, cv2.LINE_AA)
+    cv2.putText(frame, "Room 1", (TL_inside[0] + 10, TL_inside[1] - 10), font, 1, (20, 255, 255), 3, cv2.LINE_AA)
 
     # Check the class of the top detected object by looking at classes[0][0].
     # If the top detected object is a person (1) for test purposes),
@@ -232,15 +232,15 @@ def person_detector(frame):
     # If pause flag is set, draw message on screen.
     if pause == 1:
         if detected_inside == True:
-            cv2.putText(frame, str(note_1), (int(IM_WIDTH * .1), int(IM_HEIGHT * .5)), font, 2, (0, 0, 0), 7,
+            cv2.putText(frame, str(note_1), (int(IM_WIDTH /2), int(IM_HEIGHT /2)), font, 1, (0, 0, 0), 2,
                         cv2.LINE_AA)
-            cv2.putText(frame, str(note_1), (int(IM_WIDTH * .1), int(IM_HEIGHT * .5)), font, 2, (95, 176, 23), 5,
+            cv2.putText(frame, str(note_1), (int(IM_WIDTH /2), int(IM_HEIGHT /2)), font, 1, (95, 176, 23), 3,
                         cv2.LINE_AA)
 
         if detected_outside == True:
-            cv2.putText(frame, str(note_2), (int(IM_WIDTH * .1), int(IM_HEIGHT * .5)), font, 2, (0, 0, 0), 7,
+            cv2.putText(frame, str(note_2), (int(IM_WIDTH /2), int(IM_HEIGHT /2)), font, 1, (0, 0, 0), 2,
                         cv2.LINE_AA)
-            cv2.putText(frame, str(note_2), (int(IM_WIDTH * .1), int(IM_HEIGHT * .5)), font, 2, (95, 176, 23), 5,
+            cv2.putText(frame, str(note_2), (int(IM_WIDTH /2), int(IM_HEIGHT /2)), font, 1, (95, 176, 23), 3,
                         cv2.LINE_AA)
 
         # Increment pause counter until it reaches 30 (for a framerate of 1.5 FPS, this is about 20 seconds),
