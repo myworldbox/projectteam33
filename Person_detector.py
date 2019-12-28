@@ -177,10 +177,10 @@ def person_detector(frame):
         min_score_thresh=0.40)
 
     # Draw boxes defining "outside" and "inside" locations.
-    cv2.rectangle(frame, TL_outside, BR_outside, (255, 20, 20), 3)
-    cv2.putText(frame, "Room 2", (TL_outside[0] + 10, TL_outside[1] - 10), font, 1, (255, 20, 255), 3, cv2.LINE_AA)
-    cv2.rectangle(frame, TL_inside, BR_inside, (20, 20, 255), 3)
-    cv2.putText(frame, "Room 1", (TL_inside[0] + 10, TL_inside[1] - 10), font, 1, (20, 255, 255), 3, cv2.LINE_AA)
+    cv2.rectangle(frame, TL_outside, BR_outside, (255, 0, 0), 1)
+    cv2.putText(frame, "Room 2", (TL_outside[0] + 10, TL_outside[1] - 10), font, 1, (255, 0, 0), 1, cv2.LINE_AA)
+    cv2.rectangle(frame, TL_inside, BR_inside, (0, 0, 255), 1)
+    cv2.putText(frame, "Room 1", (TL_inside[0] + 10, TL_inside[1] - 10), font, 1, (0, 0, 255), 1, cv2.LINE_AA)
 
     # Check the class of the top detected object by looking at classes[0][0].
     # If the top detected object is a person (1) for test purposes),
@@ -232,16 +232,14 @@ def person_detector(frame):
     # If pause flag is set, draw message on screen.
     if pause == 1:
         if detected_inside == True:
-            cv2.putText(frame, str(note_1), (int(IM_WIDTH /2), int(IM_HEIGHT /2)), font, 0.5, (0, 0, 0), 1,
-                        cv2.LINE_AA)
             cv2.putText(frame, str(note_1), (int(IM_WIDTH /2), int(IM_HEIGHT /2)), font, 1, (0, 0, 0), 1,
                         cv2.LINE_AA)
+            
 
         if detected_outside == True:
-            cv2.putText(frame, str(note_2), (int(IM_WIDTH /2), int(IM_HEIGHT /2)), font, 0.5, (0, 0, 0), 1,
-                        cv2.LINE_AA)
             cv2.putText(frame, str(note_2), (int(IM_WIDTH /2), int(IM_HEIGHT /2)), font, 1, (0, 0, 0), 1,
                         cv2.LINE_AA)
+            
 
         # Increment pause counter until it reaches 30 (for a framerate of 1.5 FPS, this is about 20 seconds),
         # then unpause the application (set pause flag to 0).
