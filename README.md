@@ -1,10 +1,11 @@
 # Abstract  
   
-This page is created to facilicate the code sharing for the final year project of team 33 at HKU Space CC.  
+This page was created to facilicate the code sharing for the final year project of team 33 at HKU Space CC.  
 Our final year project is to create a home security system with Raspberry Pi 4.  
-You need to modify the set_up.py to carry the information of your twilio account.
+You need to modify the set_up.py with the information of your twilio account.
 
 # Object Detection on Raspberry Pi 4 Demo
+
 https://www.youtube.com/watch?v=JbwCFq9HifU&feature=youtu.be
 
 # Tutorials  
