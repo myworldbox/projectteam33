@@ -227,10 +227,10 @@ def pet_detector(frame):
     # If pause flag is set, draw message on screen.
     if pause == 1:
         if detected_inside == True:
-            cv2.putText(frame,note_1,(int(IM_WIDTH),int(IM_HEIGHT/2)),font,3,(0,0,0),1,cv2.LINE_AA)
+            cv2.putText(frame,str(note_1),(int(IM_WIDTH),int(IM_HEIGHT/2)),font,3,(0,0,0),1,cv2.LINE_AA)
 
         if detected_outside == True:
-            cv2.putText(frame,note_2,(int(IM_WIDTH),int(IM_HEIGHT/2)),font,3,(0,0,0),1,cv2.LINE_AA)
+            cv2.putText(frame,str(note_2),(int(IM_WIDTH),int(IM_HEIGHT/2)),font,3,(0,0,0),1,cv2.LINE_AA)
 
         # Increment pause counter until it reaches 30 (for a framerate of 1.5 FPS, this is about 20 seconds),
         # then unpause the application (set pause flag to 0).
