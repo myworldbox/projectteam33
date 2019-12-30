@@ -30,14 +30,11 @@ import argparse
 import sys
 
 # Set up Twilio
+from set_up import *
 from twilio.rest import Client
 
 # Twilio SID, authentication token, my phone number, and the Twilio phone number
 # are stored as environment variables on my Pi so people can't see them
-account_sid = os.environ['TWILIO_ACCOUNT_SID']
-auth_token = os.environ['TWILIO_AUTH_TOKEN']
-my_number = os.environ['MY_DIGITS']
-twilio_number = os.environ['TWILIO_DIGITS']
 
 client = Client(account_sid,auth_token)
 
