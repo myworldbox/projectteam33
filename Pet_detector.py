@@ -38,9 +38,11 @@ from twilio.rest import Client
 
 client = Client(account_sid,auth_token)
 
+note_1 = 'Someone went to Room 1!!!'
+note_2 = 'Someone went to Room 2!!!'
 # Set up camera constants
-IM_WIDTH = 1280
-IM_HEIGHT = 720
+IM_WIDTH = 800
+IM_HEIGHT = 608
 
 # Select camera type (if user enters --usbcam when calling this script,
 # a USB webcam will be used)
@@ -123,12 +125,12 @@ freq = cv2.getTickFrequency()
 font = cv2.FONT_HERSHEY_SIMPLEX
 
 # Define inside box coordinates (top left and bottom right)
-TL_inside = (int(IM_WIDTH*0.1),int(IM_HEIGHT*0.35))
-BR_inside = (int(IM_WIDTH*0.45),int(IM_HEIGHT-5))
+TL_inside = (int(IM_WIDTH* 1/6), int(IM_HEIGHT* 1/8))
+BR_inside = (int(IM_WIDTH* 2.5/6), int(IM_HEIGHT * 7/8))
 
 # Define outside box coordinates (top left and bottom right)
-TL_outside = (int(IM_WIDTH*0.46),int(IM_HEIGHT*0.25))
-BR_outside = (int(IM_WIDTH*0.8),int(IM_HEIGHT*.85))
+TL_outside = (int(IM_WIDTH * 3.5/6), int(IM_HEIGHT* 1/8))
+BR_outside = (int(IM_WIDTH * 5/6), int(IM_HEIGHT* 7/8))
 
 # Initialize control variables used for pet detector
 detected_inside = False
@@ -166,14 +168,14 @@ def pet_detector(frame):
         np.squeeze(scores),
         category_index,
         use_normalized_coordinates=True,
-        line_thickness=8,
+        line_thickness=2,
         min_score_thresh=0.40)
 
     # Draw boxes defining "outside" and "inside" locations.
-    cv2.rectangle(frame,TL_outside,BR_outside,(255,20,20),3)
-    cv2.putText(frame,"Outside box",(TL_outside[0]+10,TL_outside[1]-10),font,1,(255,20,255),3,cv2.LINE_AA)
-    cv2.rectangle(frame,TL_inside,BR_inside,(20,20,255),3)
-    cv2.putText(frame,"Inside box",(TL_inside[0]+10,TL_inside[1]-10),font,1,(20,255,255),3,cv2.LINE_AA)
+    cv2.rectangle(frame, TL_outside, BR_outside, (255, 0, 0), 2)
+    cv2.putText(frame, "Room 2", (TL_outside[0] + 10, TL_outside[1] - 10), font, 1, (255, 0, 0), 2, cv2.LINE_AA)
+    cv2.rectangle(frame, TL_inside, BR_inside, (0, 0, 255), 2)
+    cv2.putText(frame, "Room 1", (TL_inside[0] + 10, TL_inside[1] - 10), font, 1, (0, 0, 255), 2, cv2.LINE_AA)
     
     # Check the class of the top detected object by looking at classes[0][0].
     # If the top detected object is a cat (17) or a dog (18) (or a teddy bear (88) for test purposes),
@@ -199,7 +201,7 @@ def pet_detector(frame):
     if inside_counter > 10:
         detected_inside = True
         message = client.messages.create(
-            body = 'Your pet wants outside!',
+            body = note_1,
             from_=twilio_number,
             to=my_number
             )
@@ -213,7 +215,7 @@ def pet_detector(frame):
     if outside_counter > 10:
         detected_outside = True
         message = client.messages.create(
-            body = 'Your pet wants inside!',
+            body = note_2,
             from_=twilio_number,
             to=my_number
             )
@@ -225,12 +227,10 @@ def pet_detector(frame):
     # If pause flag is set, draw message on screen.
     if pause == 1:
         if detected_inside == True:
-            cv2.putText(frame,'Pet wants outside!',(int(IM_WIDTH*.1),int(IM_HEIGHT*.5)),font,3,(0,0,0),7,cv2.LINE_AA)
-            cv2.putText(frame,'Pet wants outside!',(int(IM_WIDTH*.1),int(IM_HEIGHT*.5)),font,3,(95,176,23),5,cv2.LINE_AA)
+            cv2.putText(frame,note_1',(int(IM_WIDTH),int(IM_HEIGHT/2)),font,1,(0,0,0),2,cv2.LINE_AA)
 
         if detected_outside == True:
-            cv2.putText(frame,'Pet wants inside!',(int(IM_WIDTH*.1),int(IM_HEIGHT*.5)),font,3,(0,0,0),7,cv2.LINE_AA)
-            cv2.putText(frame,'Pet wants inside!',(int(IM_WIDTH*.1),int(IM_HEIGHT*.5)),font,3,(95,176,23),5,cv2.LINE_AA)
+            cv2.putText(frame,note_2,(int(IM_WIDTH),int(IM_HEIGHT/2)),font,1,(0,0,0),2,cv2.LINE_AA)
 
         # Increment pause counter until it reaches 30 (for a framerate of 1.5 FPS, this is about 20 seconds),
         # then unpause the application (set pause flag to 0).
@@ -275,7 +275,7 @@ if camera_type == 'picamera':
         frame = pet_detector(frame)
 
         # Draw FPS
-        cv2.putText(frame,"FPS: {0:.2f}".format(frame_rate_calc),(30,50),font,1,(255,255,0),2,cv2.LINE_AA)
+        cv2.putText(frame,"FPS: {0:.2f}".format(frame_rate_calc),(10,50),font,1,(255,255,0),2,cv2.LINE_AA)
 
         # All the results have been drawn on the frame, so it's time to display it.
         cv2.imshow('Object detector', frame)
