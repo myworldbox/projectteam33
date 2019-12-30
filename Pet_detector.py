@@ -227,7 +227,7 @@ def pet_detector(frame):
     # If pause flag is set, draw message on screen.
     if pause == 1:
         if detected_inside == True:
-            cv2.putText(frame,note_1',(int(IM_WIDTH),int(IM_HEIGHT/2)),font,1,(0,0,0),2,cv2.LINE_AA)
+            cv2.putText(frame,note_1,(int(IM_WIDTH),int(IM_HEIGHT/2)),font,1,(0,0,0),2,cv2.LINE_AA)
 
         if detected_outside == True:
             cv2.putText(frame,note_2,(int(IM_WIDTH),int(IM_HEIGHT/2)),font,1,(0,0,0),2,cv2.LINE_AA)
