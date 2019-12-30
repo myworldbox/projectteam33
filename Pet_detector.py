@@ -227,10 +227,10 @@ def pet_detector(frame):
     # If pause flag is set, draw message on screen.
     if pause == 1:
         if detected_inside == True:
-            cv2.putText(frame,note_1,(int(IM_WIDTH),int(IM_HEIGHT/2)),font,1,(0,0,0),2,cv2.LINE_AA)
+            cv2.putText(frame,note_1,(int(IM_WIDTH),int(IM_HEIGHT/2)),font,3,(0,0,0),1,cv2.LINE_AA)
 
         if detected_outside == True:
-            cv2.putText(frame,note_2,(int(IM_WIDTH),int(IM_HEIGHT/2)),font,1,(0,0,0),2,cv2.LINE_AA)
+            cv2.putText(frame,note_2,(int(IM_WIDTH),int(IM_HEIGHT/2)),font,3,(0,0,0),1,cv2.LINE_AA)
 
         # Increment pause counter until it reaches 30 (for a framerate of 1.5 FPS, this is about 20 seconds),
         # then unpause the application (set pause flag to 0).
@@ -278,7 +278,7 @@ if camera_type == 'picamera':
         cv2.putText(frame,"FPS: {0:.2f}".format(frame_rate_calc),(10,50),font,1,(255,255,0),2,cv2.LINE_AA)
 
         # All the results have been drawn on the frame, so it's time to display it.
-        cv2.imshow('Object detector', frame)
+        cv2.imshow('Person detector', frame)
 
         # FPS calculation
         t2 = cv2.getTickCount()
