@@ -4,9 +4,9 @@ This page was created to facilicate the code sharing for the final year project 
 Our final year project is to create a home security system with Raspberry Pi 4.  
 You need to modify the set_up.py with the information of your twilio account.
 
-# Object Detection on Raspberry Pi 4 Demo
+# Demo of our Home Security System
 
-https://www.youtube.com/watch?v=JbwCFq9HifU&feature=youtu.be
+https://www.youtube.com/watch?v=CcTlAQWMYyw
 
 # Tutorials  
 
